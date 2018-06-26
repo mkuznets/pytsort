@@ -12,6 +12,20 @@ parser.add_argument('--version', dest='version', action='store_true',
                     help='output version information and exit')
 
 
+def addedge(d, start, fin):
+    d[start] = d.get(start, []) + [fin]
+    return d
+
+def dfs(start, d, is_visited, ans):
+    is_visited[start] = True
+    if start in d:
+        for fin in d[start]:
+            if not is_visited[fin]:
+                dfs(fin, d, is_visited, ans)
+    ans.append(start)
+
+
+
 def main():
 
     args = parser.parse_args()
@@ -21,3 +35,24 @@ def main():
         return 0
 
     text = args.infile.read()
+    
+    d = dict()
+    rd = dict()
+    renaming = []
+    prev = None
+    for i in text.split():
+        if not i in rd:
+            rd[i] = len(renaming)
+            renaming.append(i)
+        if prev is None:
+            prev = rd[i]
+        else:
+            addedge(d, prev, rd[i])
+            prev = None
+    if not prev is None:
+        raise ValueError("Odd amount of vertices!")
+    tinds = topological_sort(d, len(renaming))
+    for i in tinds:
+        print(renaming[i])
+    
+    
