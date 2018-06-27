@@ -54,4 +54,4 @@ def main():
 
     text = args.infile.read()
     graph, V, V_out = get_graph(text)
-    return sorting(graph, V, V_out)
+    print (' '.join(sorting(graph, V, V_out)))
