@@ -12,8 +12,7 @@ parser.add_argument('--version', dest='version', action='store_true',
                     help='output version information and exit')
     
 def graph (text):
-    
-    nodes = text.split(' ')
+    nodes = text.split(' \n')
     try:
         branches = [(nodes[i], nodes[i+1]) for i in range(0, len(nodes)-1, 2)]
     except:
