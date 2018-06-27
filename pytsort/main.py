@@ -16,13 +16,12 @@ def get_graph(text):
     text = text.split()
     n = len(text)
     if n % 2 == 1: raise ValueError('Нечетное число вершин в списке!')
-    #text = [(text[i], text[i+1]) for i in range(0, n, 2)]
     V = {v:[float('-inf'), float('-inf')] for v in text}
     graph = defaultdict(list)
     V_out = set(V)
     for i in range(0, n, 2):
         graph[text[i]].append(text[i+1])
-        V_out.remove(text[i+1])
+        if text[i+1] in V_out: V_out.remove(text[i+1])
     return graph, V, V_out
 
 def sorting(graph, V, V_out):
@@ -32,12 +31,9 @@ def sorting(graph, V, V_out):
         time += 1
         seen.update(node)
         stack.append(node)
-        #s = True
         if node in graph:
             for i in graph[node]:
-                if i not in seen:
-                    #s = False
-                    _sorting(i)
+                _sorting(i)
         V[node][1] = time
         time += 1
     stack = []
