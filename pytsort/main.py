@@ -24,6 +24,14 @@ def dfs(start, d, is_visited, ans):
                 dfs(fin, d, is_visited, ans)
     ans.append(start)
 
+def topological_sort(d, n_of_verts):
+    is_visited = [False] * n_of_verts
+    ans = []
+    for i in range(n_of_verts):
+        if not is_visited[i]:
+            dfs(i, d, is_visited, ans)
+    return ans[::-1]
+
 
 
 def main():
