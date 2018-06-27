@@ -57,14 +57,11 @@ def tsort(edges):
     nodes = list(adj_dict.keys())
     visited = {n: False for n in nodes}
     parent_map = dict()
-    grey = deque(nodes[:1])
-    black = deque([])
-    _sorted = deque([])
+    black = list()
     
     for node in nodes:
         if not visited[node]:
-            grey = deque([node])
-            black = deque([])
+            grey = [node]
 
             while grey:
                 _node = grey[-1]
@@ -84,21 +81,20 @@ def tsort(edges):
                     while _parent != adj_node:
                         cycle.append(_parent)
                         _parent = parent_map[_parent]
+                        
+                    cycle.append(adj_node)
 
                     print('Error: cycle detected (%s)'
-                            % ' -> '.join(cycle), file=sys.stderr
+                            % ' -> '.join(cycle[::-1]), file=sys.stderr
                         )
 
                     return 1
 
                 else:
                     grey.append(adj_node)
-
-            while black:
-                _sorted.append(black.pop())
                 
-    while _sorted:
-        print(_sorted.popleft(), file=sys.stdout)
+    while black:
+        print(black.pop(), file=sys.stdout)
     
     return 0
 
