@@ -12,7 +12,7 @@ parser.add_argument('--version', dest='version', action='store_true',
                     help='output version information and exit')
     
 def graph (text):
-    nodes = text.split(' \n')
+    nodes = text.split()
     try:
         branches = [(nodes[i], nodes[i+1]) for i in range(0, len(nodes)-1, 2)]
     except:
@@ -26,7 +26,6 @@ def graph (text):
                 g[n].append(b[1])
     return g
  
-    
 def sort(graph):
     order = list()
     time_in = set(graph.keys())
@@ -47,7 +46,7 @@ def sort(graph):
     while time_in:
         status(time_in.pop())
         
-    return order
+    yield from list(reversed(order))
     
 def main():
 
@@ -60,4 +59,5 @@ def main():
     text = args.infile.read()    
     g = graph(text)
     
-    return sort(g)
+    for el in sort(g):
+      print(el)
