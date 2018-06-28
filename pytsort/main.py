@@ -17,14 +17,12 @@ parser.add_argument('--version', dest='version', action='store_true',
 
 def dfs(v):
 
-    color[v] = 'grey'
-
     for u in structure[v]:
-        if color[u] == 'white':
+        if u not in done:
             dfs(u)
 
-    color[v] = 'black'
-    done.append(v)
+    if v not in done:
+        done.append(v)
 
 
 def topological_sort(text):
@@ -38,13 +36,12 @@ def topological_sort(text):
     for i in range(0, len(lst), 2):
         structure[lst[i]].append(lst[i + 1])
 
-    global color
-    color = defaultdict(lambda: 'white')
-
     global done
     done = []
 
     dfs(lst[0])
+    for u in set(structure.keys()) - set(done):
+        dfs(u)
 
     return list(reversed(done))
 
