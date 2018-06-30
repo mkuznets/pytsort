@@ -2,6 +2,7 @@
 
 import sys
 import argparse
+from .tsort import tsort
 
 parser = argparse.ArgumentParser(description='perform topological sort')
 
@@ -21,3 +22,8 @@ def main():
         return 0
 
     text = args.infile.read()
+    res = tsort(text)
+    if res is None:
+        print('Cycle detected')
+    else:
+        print(' '.join(res))
